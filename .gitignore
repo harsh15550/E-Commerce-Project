@@ -1,0 +1,27 @@
+# Ignore node_modules
+Admin/node_modules/
+Frontend/node_modules/
+Backend/node_modules/
+
+# Ignore .env files
+Admin/.env
+Frontend/.env
+Backend/.env
+
+# Ignore build/dist folders
+Admin/build/
+Frontend/build/
+Backend/build/
+
+# Ignore logs and temp files
+*.log
+.vscode/
+.DS_Store
+Thumbs.db
+Admin/node_modules/
+Frontend/node_modules/
+Backend/node_modules/
+Admin/.env
+Frontend/.env
+Backend/.env
+Admin/node_modules/
