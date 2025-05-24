@@ -1,9 +1,7 @@
-import React from 'react';
 import Login from './Components/Login';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { Box, Grid } from '@mui/material'; 
-import Home from './Components/Home';
 import Navbar from './Components/Navbar';
 import Orders from './Components/Orders';
 import Products from './Components/Products';
@@ -15,7 +13,6 @@ import Users from './Components/Users';
 import AddProduct from './Components/AddProduct';
 import {useSelector} from 'react-redux';
 const AppLayout = () => {
-  const location = useLocation();
   const {admin} = useSelector(store => store.user);
   console.log(admin);
   
