@@ -25,33 +25,37 @@ seller dashboards, ensuring proper role-based access. This system ensures a scal
    git clone https://github.com/harsh15550/E-Commerce-Project.git
    cd E-Commerce-Project
    
-# 2. Install Dependencies
-   I. cd backend
-      npm install
-   II. cd Frontend
-      npm install
-   III, cd Admin
-      npm install
+## 📦 Install Dependencies
+- `cd backend` → `npm install`  
+- `cd frontend` → `npm install`  
+- `cd admin` → `npm install`  
 
-# 3. Run Project
-   I. Backend
-      npx nodemon
-   II. Frontend
-      npm run dev
-   III. Admin
-      npm run dev
+---
 
-4. 🔐 Environment Variables
-    CLOUDINARY_NAME = 'YOUR CLOUDINATY NAME'
-    CLOUDINARY_API_KEY = 'YOUR CLOUDINARY API SECRET'
-    CLOUDINARY_API_SECRET = 'YOUR CLOUDINARY API SECRET'
-    PORT = 3000
-    STRIPE_SECRET_KEY = 'YOUR_SECRET_KEY'
-    STRIPE_WEBHOOK_SECRET = 'YOUR WEBHOOK SECRET'
-    CLIENT_URL = 'YOUR FRONTEND URL'
-    secretKey = 'YOUR SECRET KEY'
-    NODE_ENV=development
-    MONGO_URL='YOUR MONGODB URL'
+## 🚀 Run the Project
+- **Backend:**  
+  `cd backend` → `npx nodemon`
+- **Frontend:**  
+  `cd frontend` → `npm run dev`
+- **Admin:**  
+  `cd admin` → `npm run dev`
+
+---
+
+## 🔐 Environment Variables (`.env` in backend folder)
+
+```env
+CLOUDINARY_NAME=your_cloudinary_name
+CLOUDINARY_API_KEY=your_cloudinary_api_key
+CLOUDINARY_API_SECRET=your_cloudinary_api_secret
+PORT=3000
+STRIPE_SECRET_KEY=your_stripe_secret_key
+STRIPE_WEBHOOK_SECRET=your_webhook_secret
+CLIENT_URL=your_frontend_url
+secretKey=your_jwt_secret_key
+NODE_ENV=development
+MONGO_URL=your_mongodb_url
+```
 
 # 5 📁 Folder Structure
    E-Commerce-Project/
