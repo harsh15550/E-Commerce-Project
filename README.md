@@ -57,12 +57,13 @@ NODE_ENV=development
 MONGO_URL=your_mongodb_url
 ```
 
-# 5 📁 Folder Structure
-   E-Commerce-Project/
-   │
-   ├── backend/        # Express backend, API routes, DB models
-   ├── frontend/       # Main customer-facing frontend
-   ├── admin/          # Admin dashboard
-   └── README.md
+## 📁 Folder Structure
+
+- `E-Commerce-Project/`
+  - `backend/` — Express backend (API routes, database models, controllers)
+  - `frontend/` — Customer-facing React frontend
+  - `admin/` — Admin dashboard frontend
+  - `README.md` — Project documentation
+
 
        
