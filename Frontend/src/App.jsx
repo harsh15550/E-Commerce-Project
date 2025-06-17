@@ -23,18 +23,22 @@ import CheckoutPage from "./components/Checkout";
 import MyOrders from "./components/MyOrders";
 import { ProtectedRoute, PublicRoute, SellerProtectedRoute } from "./components/ProtectedRoute";
 import CustomerMessages from "./components/Dashboard/CustomerMessages";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import io from "socket.io-client";
 import { useDispatch, useSelector } from "react-redux";
 import { setSocket } from "./redux/socketSlice";
+import FancyLoader from "./components/FancyLoader";
 
 function App() {
   const location = useLocation();
   const hideNavFooter = location.pathname === "/login" || location.pathname === "/signup";
   const { user } = useSelector((state) => state.user);
   // const socket = useSelector((state) => state.socket.socket);
+  const [showLoader, setShowLoader] = useState(true);
   const dispatch = useDispatch();
   const userId = user?._id;
+  const { allProduct } = useSelector(store => store.products);
+
 
   useEffect(() => {
     const newSocket = io("http://localhost:3000", {
@@ -48,50 +52,59 @@ function App() {
     };
   }, [])
 
-
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (Array.isArray(allProduct) && allProduct.length > 0) {
+        setShowLoader(false);
+      }
+    }, 1000); 
+    
+    return () => clearTimeout(timer);
+  }, [allProduct]);
 
   return (
-    <Box>
-      <ToastContainer
-        position="bottom-center"
-        theme="dark"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={true}
-        closeOnClick
-        pauseOnHover
-        draggable
-      />
-      {!hideNavFooter && <Navbar />}
-      <Routes>
-        {/* Public Routes (accessible only when not logged in) */}
-        <Route path="/signup" element={<PublicRoute><Signup /></PublicRoute>} />
-        <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
+    showLoader ? <Box><FancyLoader message="Fetching awesome products..." /></Box> :
+      <Box>
+        <ToastContainer
+          position="bottom-center"
+          theme="dark"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={true}
+          closeOnClick
+          pauseOnHover
+          draggable
+        />
+        {!hideNavFooter && <Navbar />}
+        <Routes>
+          {/* Public Routes (accessible only when not logged in) */}
+          <Route path="/signup" element={<PublicRoute><Signup /></PublicRoute>} />
+          <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
 
-        {/* Protected Routes (only accessible when logged in) */}
-        <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
-        <Route path="/product" element={<ProtectedRoute><ProductsPage /></ProtectedRoute>} />
-        <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-        <Route path="/productDetail/:id" element={<ProtectedRoute><ProductDetail /></ProtectedRoute>} />
-        <Route path="/about" element={<ProtectedRoute><AboutPage /></ProtectedRoute>} />
-        <Route path="/contact" element={<ProtectedRoute><ContactPage /></ProtectedRoute>} />
-        <Route path="/checkout" element={<ProtectedRoute><CheckoutPage /></ProtectedRoute>} />
-        <Route path="/favorites" element={<ProtectedRoute><Favorites /></ProtectedRoute>} />
-        <Route path="/myorders" element={<ProtectedRoute><MyOrders /></ProtectedRoute>} />
+          {/* Protected Routes (only accessible when logged in) */}
+          <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+          <Route path="/product" element={<ProtectedRoute><ProductsPage /></ProtectedRoute>} />
+          <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+          <Route path="/productDetail/:id" element={<ProtectedRoute><ProductDetail /></ProtectedRoute>} />
+          <Route path="/about" element={<ProtectedRoute><AboutPage /></ProtectedRoute>} />
+          <Route path="/contact" element={<ProtectedRoute><ContactPage /></ProtectedRoute>} />
+          <Route path="/checkout" element={<ProtectedRoute><CheckoutPage /></ProtectedRoute>} />
+          <Route path="/favorites" element={<ProtectedRoute><Favorites /></ProtectedRoute>} />
+          <Route path="/myorders" element={<ProtectedRoute><MyOrders /></ProtectedRoute>} />
 
-        {/* Nested Dashboard Protected Routes */}
-        <Route path="/dashboard" element={<SellerProtectedRoute><DashboardPage /></SellerProtectedRoute>}>
-          <Route path="home" index element={<DashboardHome />} />
-          <Route path="products" element={<MyProducts />} />
-          <Route path="addproduct" element={<AddProduct />} />
-          <Route path="orders" element={<Orders />} />
-          <Route path="reviews" element={<Reviews />} />
-          <Route path="totalsale" element={<TotalSale />} />
-          <Route path="messages" element={<CustomerMessages />} />
-        </Route>
-      </Routes>
-      {!hideNavFooter && <Footer />}
-    </Box>
+          {/* Nested Dashboard Protected Routes */}
+          <Route path="/dashboard" element={<SellerProtectedRoute><DashboardPage /></SellerProtectedRoute>}>
+            <Route path="home" index element={<DashboardHome />} />
+            <Route path="products" element={<MyProducts />} />
+            <Route path="addproduct" element={<AddProduct />} />
+            <Route path="orders" element={<Orders />} />
+            <Route path="reviews" element={<Reviews />} />
+            <Route path="totalsale" element={<TotalSale />} />
+            <Route path="messages" element={<CustomerMessages />} />
+          </Route>
+        </Routes>
+        {!hideNavFooter && <Footer />}
+      </Box>
   );
 }
 

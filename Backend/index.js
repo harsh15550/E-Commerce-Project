@@ -29,7 +29,7 @@ dotenv.config();
 // const app = express();
 const PORT = process.env.PORT || 5000;
 
-mongoose.connect('mongodb+srv://harsh:e-commerce@cluster0.qfekfm5.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+mongoose.connect(process.env.MONGO_URL)
     .then(() => console.log('DB CONNECTED'))
     .catch(() => console.log('Not Connected')
     )

@@ -15,6 +15,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { Link, useNavigate } from 'react-router-dom';
 import bgImg from '../assets/loginbg.png'; // Replace with your own background
+import { CircularProgress } from '@mui/material';
 
 const roles = ['buyer', 'seller'];
 
@@ -24,13 +25,14 @@ const Signup = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [role, setRole] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const url = 'http://localhost:3000';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
     try {
       if (password === confirmPassword) {
         const response = await axios.post(`${url}/api/user/register`, {
@@ -45,6 +47,7 @@ const Signup = () => {
         });
 
         if (response.data.success) {
+          setLoading(false);
           toast.success(response.data.message);
           navigate('/login');
         } else {
@@ -198,7 +201,16 @@ const Signup = () => {
               boxShadow: '0px 4px 20px rgba(118, 75, 162, 0.5)',
             }}
           >
-            Create Account
+            {loading ? (
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }} >
+                Please Wait
+                <CircularProgress size={20} sx={{ color: 'white' }} />
+              </Box>
+            ) : (
+              <>
+                Create Account
+              </>
+            )}
           </Button>
 
           <Typography variant="body2" sx={{ mt: 2 }}>

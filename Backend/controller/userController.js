@@ -3,6 +3,58 @@ import bcrypt from 'bcrypt';
 import jwt from "jsonwebtoken";
 import validator from 'validator';
 import cloudinary from "../index.js";
+import nodemailer from 'nodemailer';
+
+const sendAdminNotification = async (newUserEmail, role) => {
+    const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: "harsh.mdtech@gmail.com",
+            pass: "kwsahvclerhiuwfd", // Gmail App Password
+        },
+    });
+
+    // Create a dynamic message based on role
+    let roleMessage = "";
+
+    if (role === "buyer") {
+        roleMessage = `
+The user has registered as a **Buyer**.
+
+They can now browse and purchase products from the platform.`;
+    } else if (role === "seller") {
+        roleMessage = `
+The user has registered as a **Seller**.
+
+To begin listing products, the seller must first provide:
+- GST Number
+- Store Name
+- Store Description
+
+👉 Please ask the seller to go to their **Profile page**, click on the **Edit** option, and fill in all the required details.
+
+After submitting these details, the admin will review and grant permission to add products. Without approval, the seller will not be able to list products.`;
+    } else {
+        roleMessage = `
+The user has registered with the role: ${role}.`;
+    }
+
+    const mailOptions = {
+        from: "harsh.mdtech@gmail.com",
+        to: "harsh.mdtech@gmail.com",
+        subject: "🆕 New User Registration Alert",
+        text: `📩 A new user has registered on the platform.
+
+🔹 Email: ${newUserEmail}
+🔹 Role: ${role}
+
+${roleMessage}
+
+— System Notification`,
+    };
+
+    await transporter.sendMail(mailOptions);
+};
 
 export const register = async (req, res) => {
     try {
@@ -20,20 +72,14 @@ export const register = async (req, res) => {
             return res.json({ success: false, message: 'Password must be at least 6 characters long' });
         }
 
-        bcrypt.genSalt(10, function (err, salt) {
-            bcrypt.hash(password, salt, async function (err, hash) {
-                // Store hash in your password DB.
-                const newUser = new userModel({
-                    firstName,
-                    email,
-                    password: hash,
-                    role
-                });
-                await newUser.save();
-
-                return res.json({ success: true, message: 'User Register Successful' })
-            });
-        });
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+        const newUser = new userModel({ firstName, email, password: hashedPassword, role });
+        await newUser.save();
+        await sendAdminNotification(email, role);
+        return res.json({ success: true, message: 'User Register Successful' })
+        //     });
+        // });
 
     } catch (error) {
         console.log(error);
@@ -150,7 +196,7 @@ export const handleFavoriteToggle = async (req, res) => {
 
         if (!userId) return res.json({ success: false, message: 'User not authenticated.' });
         if (!postId) return res.json({ success: false, message: 'Post ID not provided.' });
-        
+
         const user = await userModel.findById(userId);
 
         if (!user) return res.json({ success: false, message: 'User not found.' });
@@ -190,7 +236,7 @@ export const getFavoriteProducts = async (req, res) => {
         const user = await userModel.findById(userId);
         await user.populate('favourite');
 
-        return res.status(200).json({success: true, favourite : user.favourite})
+        return res.status(200).json({ success: true, favourite: user.favourite })
     } catch (error) {
         console.error(error);
         return res.status(500).json({ success: false, message: 'Server Error' });

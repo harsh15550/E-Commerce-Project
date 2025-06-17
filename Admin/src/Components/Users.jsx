@@ -35,6 +35,9 @@ const Users = () => {
         }
     };
 
+    console.log(users);
+    
+
     const handleSellerPermission = async (userId, newPermission) => {
         try {
             const res = await axios.put(`${url}/api/admin/permission/${userId}`, {
@@ -67,7 +70,6 @@ const Users = () => {
     }
 
     useEffect(() => {
-        console.log(users);
         handleSearch();
     }, [searchName])
 

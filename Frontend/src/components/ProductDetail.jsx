@@ -40,6 +40,8 @@ const ProductDetail = () => {
 
     const [open, setOpen] = useState(false);
 
+    console.log(product);
+    
     const toggleDrawer = (state) => () => {
         setOpen(state);
     };

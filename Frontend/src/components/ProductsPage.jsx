@@ -157,7 +157,7 @@ const ProductsPage = () => {
       {/* Filter Drawer */}
       <Drawer anchor="left" open={open} onClose={toggleDrawer(false)}>
         <Box sx={{ width: 300, p: 3 }}>
-          <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
+          <Box display="flex" justifyContent="space-between" alignItems="center">
             <Typography variant="h6">Filters</Typography>
             <IconButton onClick={toggleDrawer(false)}>
               <CloseIcon />

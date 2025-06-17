@@ -159,7 +159,8 @@ export const getProductDetail = async (req, res) => {
             populate: {
                 path: 'userId',
                 select: 'firstName lastName profileImage'
-            }
+            },
+            // path:'sellerId'
         });
 
         await product.save();

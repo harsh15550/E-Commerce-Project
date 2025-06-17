@@ -4,7 +4,8 @@ import productModel from '../models/product.js';
 import orderModel from '../models/Order.js';
 import PDFDocument from 'pdfkit';
 import path from 'path';
-import fs from 'fs';
+import nodemailer from "nodemailer";
+import fs from "fs";
 
 dotenv.config();
 
@@ -122,6 +123,31 @@ export function generatePDF(orders) {
     });
 }
 
+export const sendReceiptEmail = async (toEmail, receiptPath) => {
+    const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: "harsh.mdtech@gmail.com",
+            pass: "kwsahvclerhiuwfd"
+        },
+    });
+
+    const mailOptions = {
+        from: "harsh.mdtech@gmail.com",
+        to: toEmail,
+        subject: "Your Order Receipt",
+        text: "Thank you for your purchase! Please find your receipt attached.",
+        attachments: [
+            {
+                filename: 'receipt.pdf',
+                path: receiptPath,
+            },
+        ],
+    };
+
+    return transporter.sendMail(mailOptions);
+};
+
 export const webhook = async (req, res) => {
     const sig = req.headers['stripe-signature'];
     const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
@@ -189,10 +215,15 @@ export const webhook = async (req, res) => {
             });
 
             await order.save();
-            orderDocs.push(order); // Collect orders
+            orderDocs.push(order);
         }
 
-        await generatePDF(orderDocs); // ✅ One PDF for all seller orders
+        const receiptPath = await generatePDF(orderDocs);
+        console.log(receiptPath);
+        
+        const toEmail = session.customer_details.email;
+
+        await sendReceiptEmail(toEmail, receiptPath);
 
         return res.status(200).send({ received: true });
     } else {

@@ -12,6 +12,9 @@ import {
 const SubscriptionSection = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  }
 
   return (
     <Paper
@@ -34,6 +37,7 @@ const SubscriptionSection = () => {
       </Typography>
 
       <Box
+      onSubmit={handleSubmit}
         component="form"
         noValidate
         autoComplete="off"
