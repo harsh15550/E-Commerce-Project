@@ -51,7 +51,7 @@ const Reviews = () => {
         <Typography variant="h6">Reviews</Typography>
 
           <Select defaultValue="latest" size="small">
-            <MenuItem value="latest">Sort by Price</MenuItem>
+            <MenuItem value="latest">Sort by Star</MenuItem>
             <MenuItem value="priceHigh" onClick={() => handleSortOption('Descending')}>Star : High to Low</MenuItem>
             <MenuItem value="priceLow" onClick={() => handleSortOption('Ascending')}>Star : Low to High</MenuItem>
           </Select>

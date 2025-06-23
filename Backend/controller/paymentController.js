@@ -6,7 +6,6 @@ import PDFDocument from 'pdfkit';
 import path from 'path';
 import nodemailer from "nodemailer";
 import fs from "fs";
-
 dotenv.config();
 
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
@@ -127,13 +126,13 @@ export const sendReceiptEmail = async (toEmail, receiptPath) => {
     const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
-            user: "harsh.mdtech@gmail.com",
-            pass: "kwsahvclerhiuwfd"
+            user: process.env.ADMIN_EMAIL,
+            pass: process.env.ADMIN_PASSWORD
         },
     });
 
     const mailOptions = {
-        from: "harsh.mdtech@gmail.com",
+        from: process.env.ADMIN_EMAIL,
         to: toEmail,
         subject: "Your Order Receipt",
         text: "Thank you for your purchase! Please find your receipt attached.",

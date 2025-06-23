@@ -4,13 +4,15 @@ import jwt from "jsonwebtoken";
 import validator from 'validator';
 import cloudinary from "../index.js";
 import nodemailer from 'nodemailer';
+import dotenv  from "dotenv";
+dotenv.config();
 
 const sendAdminNotification = async (newUserEmail, role) => {
     const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
-            user: "harsh.mdtech@gmail.com",
-            pass: "kwsahvclerhiuwfd", // Gmail App Password
+            user: process.env.ADMIN_EMAIL,
+            pass: process.env.ADMIN_PASSWORD, // Gmail App Password
         },
     });
 
@@ -40,8 +42,8 @@ The user has registered with the role: ${role}.`;
     }
 
     const mailOptions = {
-        from: "harsh.mdtech@gmail.com",
-        to: "harsh.mdtech@gmail.com",
+        from: process.env.ADMIN_EMAIL,
+        to: [process.env.ADMIN_EMAIL, newUserEmail],
         subject: "🆕 New User Registration Alert",
         text: `📩 A new user has registered on the platform.
 
@@ -78,8 +80,6 @@ export const register = async (req, res) => {
         await newUser.save();
         await sendAdminNotification(email, role);
         return res.json({ success: true, message: 'User Register Successful' })
-        //     });
-        // });
 
     } catch (error) {
         console.log(error);

@@ -70,7 +70,7 @@ const Users = () => {
     }
 
     useEffect(() => {
-        handleSearch();
+        if(searchName) handleSearch();
     }, [searchName])
 
     useEffect(() => {

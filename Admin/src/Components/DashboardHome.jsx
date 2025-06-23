@@ -25,6 +25,7 @@ const DashboardHome = () => {
   const [rows, setRows] = useState([]);
   const [totalSale, setTotalSale] = useState();
   const [totalReviews, setTotalReviews] = useState();
+  const [totalProducts, setTotalProducts] = useState();
   const { allProduct } = useSelector(store => store.products);
   const [reviews, setReviews] = useState([]);
   const [page, setPage] = useState(0);
@@ -37,8 +38,21 @@ const DashboardHome = () => {
     setPage(0);
   };
 
-  console.log(allProduct);
   
+  const getAllProduct = async () => {
+    try {
+      const response = await axios.get(`${url}/api/product/getAllProduct`);
+      if (response.data.success) {
+        setTotalProducts(response.data.products)
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getAllProduct();
+  }, []);
 
   const getAllOrders = async () => {
     try {
@@ -139,7 +153,7 @@ const DashboardHome = () => {
             <Typography variant="h6" gutterBottom>
               Total Products
             </Typography>
-            <Typography variant="h4">{allProduct.length}</Typography>
+            <Typography variant="h4">{totalProducts?.length}</Typography>
           </Paper>
         </Grid>
 

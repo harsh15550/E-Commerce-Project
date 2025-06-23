@@ -98,8 +98,11 @@ const Orders = () => {
     }
   }
 
+  console.log(orders);
+  
+
   return (
-    <Box sx={{ p: 3, width: '105%' }} >
+    <Box sx={{ p: 3, width: '100%' }} >
       {/* Top Bar */}
       <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Typography variant="h6">Orders</Typography>
@@ -123,15 +126,16 @@ const Orders = () => {
               <TableCell align='center' ><strong>Seller Name</strong></TableCell>
               <TableCell align='center' ><strong>Customer Name</strong></TableCell>
               <TableCell align='center' ><strong>Product Name</strong></TableCell>
+              <TableCell align='center' ><strong>City</strong></TableCell>
+              <TableCell align='center' ><strong>Customer No</strong></TableCell>
               <TableCell align='center' ><strong>Price (₹)</strong></TableCell>
               <TableCell align='center' ><strong>Date</strong></TableCell>
               <TableCell align='center' ><strong>Payment Status</strong></TableCell>
-              <TableCell align='center' ><strong>Order Status</strong></TableCell>
               <TableCell align='center' ><strong>Action</strong></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {orders.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) =>
+            {orders.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) =>
             (
               <TableRow key={row._id} sx={{ '&:nth-of-type(odd)': { backgroundColor: 'grey.100' } }}>
                 <TableCell align='center' sx={{ width: "40px" }} >
@@ -140,6 +144,8 @@ const Orders = () => {
                 <TableCell align='center' >{row.sellerId.firstName}</TableCell>
                 <TableCell align='center' >{row.firstName}</TableCell>
                 <TableCell align='center' style={{ width: '150px' }} >{row.products[0]?.productId?.name}</TableCell>
+                <TableCell align='center' >{row.city}</TableCell>
+                <TableCell align='center' >{row.phone}</TableCell>
                 <TableCell align='center' >{row.products[0].price}</TableCell>
                 <TableCell align='center' >{new Date(row.createdAt).toLocaleDateString('en-GB', {
                   day: '2-digit',
@@ -147,7 +153,7 @@ const Orders = () => {
                   year: 'numeric'
                 })}</TableCell>
                 <TableCell align='center' sx={{ fontWeight: '600' }} >{row.paymentStatus}</TableCell>
-                <TableCell align='center' >
+                {/* <TableCell align='center' >
                   <Select
                     value={row.orderStatus}
                     onChange={(e) => handleChangeStatus(index, e.target.value, row._id)}
@@ -164,7 +170,7 @@ const Orders = () => {
                     <MenuItem value="shipped">shipped</MenuItem>
                     <MenuItem value="cancelled">cancelled</MenuItem>
                   </Select>
-                </TableCell>
+                </TableCell> */}
                 <TableCell align='center' >
                   <IconButton onClick={() => handleDelete(row._id)} color="error">
                     <DeleteIcon />

@@ -127,7 +127,6 @@ export const searchNameProduct = async (req, res) => {
 export const deleteOrder = async (req, res) => {
     try {
         const orderId = req.params.id;
-        console.log(orderId);
 
         if (!orderId) return res.json({ success: false, message: 'Order Not Found' })
         const order = await orderModel.findByIdAndDelete(orderId)

@@ -14,6 +14,7 @@ import orderRouter from "./routes/orderRoute.js";
 import adminRouter from "./routes/adminRoute.js";
 import { server, app } from "./socket/socket.js";
 import messageRouter from "./routes/messageRoute.js";
+import otpRouter from "./routes/otpRoute.js";
 dotenv.config();
 
 cloudinary.config({
@@ -57,6 +58,7 @@ app.use('/api/order', orderRouter);
 app.use('/api/product', productRoute);
 app.use('/api/admin', adminRouter);
 app.use('/api/message', messageRouter);
+app.use('/api/otp', otpRouter);
 
 server.listen(PORT, () => {
     console.log('Your Server Is Running On PORT No', PORT);

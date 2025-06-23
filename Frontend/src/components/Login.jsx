@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import { Email, Lock, Visibility, VisibilityOff } from '@mui/icons-material';
 import { Link, useNavigate } from 'react-router-dom';
-import bgImg from '../assets/loginbg.png'; // Replace with your own background
+import bgImg from '../assets/loginbg.png';
 import { toast } from 'react-toastify';
 import { setUser } from '../redux/authSlice';
 import { useDispatch } from 'react-redux';
@@ -20,22 +20,17 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const url = 'http://localhost:3000';
 
   const handleTogglePassword = () => {
     setShowPassword((prev) => !prev);
   };
 
-  const navigate = useNavigate();
-
-  const dispatch = useDispatch(); 
-
-  const url = 'http://localhost:3000';
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-
       const response = await axios.post(`${url}/api/user/login`, {
         email,
         password,
@@ -44,18 +39,17 @@ const Login = () => {
           'Content-Type': 'application/json'
         },
         withCredentials: true
-      })
+      });
 
       if (response.data.success) {
         toast.success(response.data.message);
         navigate('/');
-        dispatch(setUser(response.data.user))
+        dispatch(setUser(response.data.user));
       } else {
         toast.error(response.data.message);
       }
     } catch (error) {
       console.log(error);
-
     }
   };
 
@@ -121,7 +115,7 @@ const Login = () => {
           <TextField
             fullWidth
             label="Email"
-            placeholder='example@gmail.com'
+            placeholder="example@gmail.com"
             type="email"
             variant="outlined"
             margin="normal"
@@ -141,7 +135,7 @@ const Login = () => {
             label="Password"
             type={showPassword ? 'text' : 'password'}
             variant="outlined"
-            placeholder='Password'
+            placeholder="Password"
             margin="normal"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -154,7 +148,7 @@ const Login = () => {
               endAdornment: (
                 <InputAdornment position="end">
                   <IconButton onClick={handleTogglePassword} edge="end">
-                    {/* {showPassword ? <VisibilityOff /> : <Visibility />} */}
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
                 </InputAdornment>
               ),
@@ -176,11 +170,34 @@ const Login = () => {
           >
             Login
           </Button>
+
+          {/* Forgot Password Button */}
+          <Button
+            onClick={() => navigate('/forgot-password')}
+            fullWidth
+            sx={{
+              mt: 1,
+              textTransform: 'none',
+              color: '#0072ff',
+              fontWeight: 500,
+              fontSize: '0.95rem',
+              backgroundColor: 'transparent',
+              '&:hover': {
+                textDecoration: 'underline',
+                backgroundColor: 'transparent',
+              },
+            }}
+          >
+            Forgot Password?
+          </Button>
         </form>
 
-        <Typography mt={3} fontSize="0.9rem">
+        <Typography mt={1} fontSize="0.9rem">
           Don’t have an account?{' '}
-          <Link to="/signup" style={{ color: '#1976d2', textDecoration: 'underline' }}>
+          <Link
+            to="/signup"
+            style={{ color: '#1976d2', textDecoration: 'underline' }}
+          >
             Create here
           </Link>
         </Typography>

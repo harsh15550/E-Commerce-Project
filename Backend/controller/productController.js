@@ -302,12 +302,10 @@ export const deleteProduct = async (req, res) => {
 export const searchProduct = async (req, res) => {
     try {
         const query = req.query.productname;
-        const userId = req.user;
-        console.log(userId);
 
         const products = await productModel.find({
             name: { $regex: query.toString(), $options: 'i' },
-            sellerId: userId // assuming 'seller' field stores the owner's _id
+            // sellerId: userId // assuming 'seller' field stores the owner's _id
         });
 
         return res.json({ success: true, products });

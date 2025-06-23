@@ -28,10 +28,11 @@ import io from "socket.io-client";
 import { useDispatch, useSelector } from "react-redux";
 import { setSocket } from "./redux/socketSlice";
 import FancyLoader from "./components/FancyLoader";
+import ForgotPassword from "./components/ForgotPassword";
 
 function App() {
   const location = useLocation();
-  const hideNavFooter = location.pathname === "/login" || location.pathname === "/signup";
+  const hideNavFooter = location.pathname === "/login" || location.pathname === "/signup" || location.pathname === "/forgot-password";
   const { user } = useSelector((state) => state.user);
   // const socket = useSelector((state) => state.socket.socket);
   const [showLoader, setShowLoader] = useState(true);
@@ -80,6 +81,7 @@ function App() {
           {/* Public Routes (accessible only when not logged in) */}
           <Route path="/signup" element={<PublicRoute><Signup /></PublicRoute>} />
           <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
+          <Route path="/forgot-password" element={<PublicRoute><ForgotPassword /></PublicRoute>} />
 
           {/* Protected Routes (only accessible when logged in) */}
           <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
