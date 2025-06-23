@@ -115,7 +115,7 @@ export const getReview = async (req, res) => {
         let review = await reviewModel.findOne({ productId, userId });
         if (!review) return res.json({ success: false, messageL: 'Not Found' })
 
-        return res.json({ success: true, review });
+        return res.json({ success: true, review }); 
 
     } catch (error) {
         console.log(error);

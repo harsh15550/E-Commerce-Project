@@ -241,8 +241,8 @@ const ForgotPassword = () => {
                                     style: {
                                         textAlign: 'center',
                                         fontSize: '1.5rem',
-                                        width: '3rem',
-                                        height: '3rem',
+                                        width: '20px',
+                                        height: '20px',
                                         borderRadius: '8px',
                                     },
                                 }}
