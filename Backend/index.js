@@ -36,7 +36,7 @@ mongoose.connect(process.env.MONGO_URL)
     )
 
 app.use(cors({
-    origin: ['http://localhost:5173', 'http://localhost:5174'],
+    origin: ['http://localhost:5173', 'http://localhost:5174', 'e-commerce-project-frontend-bay.vercel.app'],
     credentials: true
 }))
 
