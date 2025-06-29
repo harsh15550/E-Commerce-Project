@@ -25,7 +25,7 @@ const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [searchOrder, setSearchOrder] = useState([]);
 
-  const url = 'http://localhost:3000'
+  const url = 'https://e-commerce-project-6wl4.onrender.com'
 
   const handleChangeStatus = async (index, orderStatus, orderId) => {
 

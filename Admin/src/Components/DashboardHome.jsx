@@ -20,7 +20,7 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 const DashboardHome = () => {
-  const url = 'http://localhost:3000';
+  const url = 'https://e-commerce-project-6wl4.onrender.com';
   const [orders, setOrders] = useState([]);
   const [rows, setRows] = useState([]);
   const [totalSale, setTotalSale] = useState();

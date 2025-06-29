@@ -42,7 +42,7 @@ const ChatApp = ({ sellerId }) => {
             };
 
             try {
-                const res = await axios.post("http://localhost:3000/api/message/send", messageData, { withCredentials: true });
+                const res = await axios.post("https://e-commerce-project-6wl4.onrender.com/api/message/send", messageData, { withCredentials: true });
 
                 if (res.data.success) {
                     const newMessage = {
@@ -63,7 +63,7 @@ const ChatApp = ({ sellerId }) => {
     const getMessage = async () => {
         try {
             if (sellerId) {
-                const response = await axios.get(`http://localhost:3000/api/message/getMessage/${sellerId}`, { withCredentials: true });
+                const response = await axios.get(`https://e-commerce-project-6wl4.onrender.com/api/message/getMessage/${sellerId}`, { withCredentials: true });
 
                 if (response.data.success) {
                     dispatch(setMessage(response.data.data))

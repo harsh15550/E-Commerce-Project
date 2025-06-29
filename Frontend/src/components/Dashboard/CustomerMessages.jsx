@@ -33,7 +33,7 @@ const CustomerMessages = () => {
     scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [message]);
 
-  const url = 'http://localhost:3000';
+  const url = 'https://e-commerce-project-6wl4.onrender.com';
 
   useEffect(() => {
     const result = customers?.filter(c =>
@@ -53,7 +53,7 @@ const CustomerMessages = () => {
     if (selectedChatUser) {
 
       try {
-        const response = await axios.get(`http://localhost:3000/api/message/getMessage/${selectedChatUser?.user?._id}`, { withCredentials: true });
+        const response = await axios.get(`${url}/api/message/getMessage/${selectedChatUser?.user?._id}`, { withCredentials: true });
 
         if (response.data.success) {
           dispatch(setMessage(response.data.data))
@@ -77,7 +77,7 @@ const CustomerMessages = () => {
       };
 
       try {
-        const res = await axios.post("http://localhost:3000/api/message/send", messageData, { withCredentials: true });
+        const res = await axios.post("https://e-commerce-project-6wl4.onrender.com/api/message/send", messageData, { withCredentials: true });
 
         if (res.data.success) {
           const newMessage = {

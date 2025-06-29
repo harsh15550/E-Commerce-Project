@@ -43,7 +43,7 @@ export default function Navbar() {
   const { user } = useSelector(store => store.user);
   const { cartItems } = useSelector(store => store.cartItems);
   const open = Boolean(anchorEl);
-  const url = 'http://localhost:3000';
+  const url = 'https://e-commerce-project-6wl4.onrender.com';
   const dispatch = useDispatch();
   const navigate = useNavigate('');
   const [openDialog, setOpenDialog] = useState(false);
@@ -67,7 +67,7 @@ export default function Navbar() {
 
   const logoutHandler = async () => {
     try {
-      const response = await axios.post(`${url}/api/user/logout`);
+      const response = await axios.post(`${url}/api/user/logout`, null, {withCredentials: true});
       if (response.data.success) {
         toast.success(response.data.message);
         navigate('/login');

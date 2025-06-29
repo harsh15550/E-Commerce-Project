@@ -42,7 +42,7 @@ function App() {
 
 
   useEffect(() => {
-    const newSocket = io("http://localhost:3000", {
+    const newSocket = io("https://e-commerce-project-6wl4.onrender.com", {
       query: { userId },
     });
 

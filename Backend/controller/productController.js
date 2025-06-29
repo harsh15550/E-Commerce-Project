@@ -145,6 +145,8 @@ export const getReviewsBySeller = async (req, res) => {
 
 export const getProductDetail = async (req, res) => {
     const userId = req.user;
+    console.log("detail page ",userId);
+    
     const productId = req.params.id;
 
     try {
@@ -196,7 +198,6 @@ export const getAllProduct = async (req, res) => {
 export const getSellerProducts = async (req, res) => {
     try {
         const userId = req.user;
-        console.log(userId);
 
         if (!userId) return res.json({ success: false, message: 'User Not Authenticated' });
         const products = await productModel.find({ sellerId: userId });

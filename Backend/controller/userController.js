@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import validator from 'validator';
 import cloudinary from "../index.js";
 import nodemailer from 'nodemailer';
-import dotenv  from "dotenv";
+import dotenv from "dotenv";
 dotenv.config();
 
 const sendAdminNotification = async (newUserEmail, role) => {
@@ -67,7 +67,7 @@ export const register = async (req, res) => {
         if (user) return res.json({ success: false, message: 'User Already Exist' });
 
         if (!validator.isEmail(email)) {
-            return res.json({ success: false, message: 'User Already Exist' });
+            return res.json({ success: false, message: 'Enter Valid Email' });
         }
 
         if (password.length < 6) {
@@ -105,10 +105,12 @@ export const login = async (req, res) => {
                 );
 
                 res.cookie('token', token, {
-                    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-                    httpOnly: true,
-                    secure: process.env.NODE_ENV === "production", // for secure deployment
+                    httpOnly: true,              // ✅ Prevent JS access
+                    secure: true,                // ✅ Required on HTTPS (Render is HTTPS)
+                    sameSite: 'None',            // ✅ Must be 'None' for cross-origin cookies
+                    maxAge: 7 * 24 * 60 * 60 * 1000  // ✅ 7 days
                 });
+
 
                 // Check role and send response accordingly
                 if (user.role === "admin") {
@@ -242,6 +244,3 @@ export const getFavoriteProducts = async (req, res) => {
         return res.status(500).json({ success: false, message: 'Server Error' });
     }
 }
-
-
-// ======== Admin =========
