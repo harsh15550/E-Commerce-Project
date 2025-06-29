@@ -135,7 +135,6 @@ const ProductDetail = () => {
                     <CircularProgress size={60} />
                 </Box>
             ) : (
-                //   <></>
                 <Box p={4} ml={'80px'}>
                     <Grid sx={{ display: 'flex' }} mt={2} container spacing={4}>
                         {/* Left Side */}
@@ -413,11 +412,11 @@ const ProductDetail = () => {
                     </Drawer>
 
                 </Box>
-                    )
-                }
-                    </Box>
+            )
+            }
+        </Box>
 
-)
+    )
 }
 
 

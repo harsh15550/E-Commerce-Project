@@ -42,6 +42,8 @@ function App() {
 
 
   useEffect(() => {
+      if (!userId) return; // Wait until userId is available
+
     const newSocket = io("https://e-commerce-project-6wl4.onrender.com", {
       query: { userId },
     });
