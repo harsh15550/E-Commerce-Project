@@ -22,7 +22,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const url = 'https://e-commerce-project-6wl4.onrender.com';
+  const url = 'http://localhost:3000';
 
   const handleTogglePassword = () => {
     setShowPassword((prev) => !prev);

@@ -33,7 +33,7 @@ const CustomerMessages = () => {
     scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [message]);
 
-  const url = 'https://e-commerce-project-6wl4.onrender.com';
+  const url = 'http://localhost:3000';
 
   useEffect(() => {
     const result = customers?.filter(c =>
@@ -77,7 +77,7 @@ const CustomerMessages = () => {
       };
 
       try {
-        const res = await axios.post("https://e-commerce-project-6wl4.onrender.com/api/message/send", messageData, { withCredentials: true });
+        const res = await axios.post("http://localhost:3000/api/message/send", messageData, { withCredentials: true });
 
         if (res.data.success) {
           const newMessage = {

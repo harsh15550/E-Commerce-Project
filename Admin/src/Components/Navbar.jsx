@@ -21,7 +21,7 @@ import { setAdmin } from '../../../Frontend/src/redux/authSlice';
 export default function Navbar() {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
-    const url = 'https://e-commerce-project-6wl4.onrender.com';
+    const url = 'http://localhost:3000';
     const dispatch = useDispatch();
     const navigate = useNavigate('');
 

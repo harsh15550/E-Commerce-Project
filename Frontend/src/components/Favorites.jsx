@@ -4,7 +4,7 @@ import axios from 'axios';
 import ProductCard from './ProductCard';
 
 const Favorites = () => {
-  const url = 'https://e-commerce-project-6wl4.onrender.com';
+  const url = 'http://localhost:3000';
   const [favorite, setFavorite] = useState([]);
 
   const getFavoriteProduct = async () => {

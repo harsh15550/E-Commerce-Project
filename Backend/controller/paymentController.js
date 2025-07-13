@@ -218,7 +218,6 @@ export const webhook = async (req, res) => {
         }
 
         const receiptPath = await generatePDF(orderDocs);
-        console.log(receiptPath);
         
         const toEmail = session.customer_details.email;
 

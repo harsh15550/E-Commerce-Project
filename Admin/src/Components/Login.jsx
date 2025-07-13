@@ -25,7 +25,7 @@ const Login = () => {
   };
 
   const navigate = useNavigate();
-  const url = 'https://e-commerce-project-6wl4.onrender.com';
+  const url = 'http://localhost:3000';
 
   const handleSubmit = async (e) => {
     e.preventDefault();

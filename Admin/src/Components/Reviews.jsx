@@ -22,7 +22,7 @@ const Reviews = () => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-  const url = 'https://e-commerce-project-6wl4.onrender.com';
+  const url = 'http://localhost:3000';
 
   const handleGetReview = async () => {
     try {

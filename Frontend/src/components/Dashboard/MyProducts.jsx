@@ -27,7 +27,7 @@ const headCells = [
 ];
 
 const MyProducts = () => {
-  const url = 'https://e-commerce-project-6wl4.onrender.com';
+  const url = 'http://localhost:3000';
 
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('name');

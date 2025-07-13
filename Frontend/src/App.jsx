@@ -29,6 +29,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setSocket } from "./redux/socketSlice";
 import FancyLoader from "./components/FancyLoader";
 import ForgotPassword from "./components/ForgotPassword";
+import axios from "axios";
+import { setAllProducts } from "./redux/productSlice";
 
 function App() {
   const location = useLocation();
@@ -38,11 +40,12 @@ function App() {
   const [showLoader, setShowLoader] = useState(true);
   const dispatch = useDispatch();
   const userId = user?._id;
-  const { allProduct } = useSelector(store => store.products);
+  // const { allProduct } = useSelector(store => store.products);
+  const [allProduct, setAllProduct] = useState([]);
 
 
   useEffect(() => {
-      if (!userId) return; // Wait until userId is available
+    if (!userId) return; // Wait until userId is available
 
     const newSocket = io("https://e-commerce-project-6wl4.onrender.com", {
       query: { userId },
@@ -55,18 +58,34 @@ function App() {
     };
   }, [])
 
+  const getAllProduct = async () => {
+    try {
+      const response = await axios.get(`https://e-commerce-project-6wl4.onrender.com/api/product/getAllProduct`);
+      if (response.data.success) {
+        dispatch(setAllProducts(response.data.products));
+        setAllProduct(response.data.products);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getAllProduct
+  }, [])
+
   useEffect(() => {
     const timer = setTimeout(() => {
       if (Array.isArray(allProduct) && allProduct.length > 0) {
         setShowLoader(false);
       }
-    }, 1000); 
-    
+    }, 1000);
+
     return () => clearTimeout(timer);
   }, [allProduct]);
 
   return (
-    showLoader ? <Box><FancyLoader message="Fetching awesome products..." /></Box> :
+    // showLoader ? <Box><FancyLoader message="Fetching awesome products..." /></Box> :
       <Box>
         <ToastContainer
           position="bottom-center"
