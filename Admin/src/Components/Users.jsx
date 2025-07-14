@@ -15,7 +15,7 @@ const Users = () => {
     const [users, setUsers] = useState([]);
     const [searchName, setSearchName] = useState('');
 
-    const url = 'http://localhost:3000';
+    const url = 'https://e-commerce-project-6wl4.onrender.com';
 
     const handleChangePage = (event, newPage) => setPage(newPage);
     const handleChangeRowsPerPage = (event) => {

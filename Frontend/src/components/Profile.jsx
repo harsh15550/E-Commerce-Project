@@ -38,7 +38,7 @@ const Profile = () => {
   const [favourite, setFavourite] = useState([]);
   const dispatch = useDispatch('');
 
-  const url = 'http://localhost:3000';
+  const url = 'https://e-commerce-project-6wl4.onrender.com';
 
   const handleProfileChange = (e) => {
     const file = e.target.files[0];
@@ -64,7 +64,7 @@ const Profile = () => {
       formData.append('storeName', storeName);
       formData.append('gstNumber', gstNumber);
 
-      const response = await axios.post('http://localhost:3000/api/user/edit', formData, {
+      const response = await axios.post('https://e-commerce-project-6wl4.onrender.com/api/user/edit', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         },

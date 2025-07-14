@@ -22,7 +22,7 @@ const ForgotPassword = () => {
     const [otp, setOtp] = useState(['', '', '', '', '', '']);
     const [openOtpPopup, setOpenOtpPopup] = useState(false);
     const inputRefs = useRef([]);
-    const url = 'http://localhost:3000';
+    const url = 'https://e-commerce-project-6wl4.onrender.com';
     const [openResetPopup, setOpenResetPopup] = useState(false);
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');

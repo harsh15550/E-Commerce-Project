@@ -28,7 +28,7 @@ const Signup = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const url = 'http://localhost:3000';
+  const url = 'https://e-commerce-project-6wl4.onrender.com';
 
   const handleSubmit = async (e) => {
     e.preventDefault();

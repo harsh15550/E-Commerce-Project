@@ -38,7 +38,7 @@ const ProductDetail = () => {
     const { cartItems } = useSelector((state) => state.cartItems);
     const [quantity, setQuantity] = useState(0);
     const [reletedProducts, setReletedProducts] = useState([]);
-    const url = 'http://localhost:3000';
+    const url = 'https://e-commerce-project-6wl4.onrender.com';
 
     const [open, setOpen] = useState(false);
 

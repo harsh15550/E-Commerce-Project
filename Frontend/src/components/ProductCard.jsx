@@ -20,7 +20,7 @@ const ProductCard = ({ item }) => {
 
   const { user } = useSelector(store => store.user);
 
-  const url = 'http://localhost:3000';
+  const url = 'https://e-commerce-project-6wl4.onrender.com';
   const [isFavourite, setIsFavourite] = useState(user?.favourite.includes(item._id) || false); // Default from DB or false
   const dispatch = useDispatch();
   const navigate = useNavigate();
