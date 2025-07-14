@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import {
-  Box, Button, IconButton, InputBase, MenuItem, Paper,
+  Box, Button, CircularProgress, IconButton, InputBase, MenuItem, Paper,
   Select, Table, TableBody, TableCell, TableContainer, TableHead,
   TablePagination, TableRow, TableSortLabel, Toolbar, Typography,
 } from '@mui/material';
@@ -38,6 +38,7 @@ const MyProducts = () => {
   const [selectProduct, setSelectProduct] = useState({});
   const [searchProduct, setSearchProduct] = useState('');
   const { user } = useSelector(store => store.user);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   const handleRequestSort = (event, property) => {
@@ -63,7 +64,6 @@ const MyProducts = () => {
         setRows(updatedProducts)
         toast.success(response.data.message);
       }
-      console.log(response);
 
     } catch (error) {
       console.log(error);
@@ -76,6 +76,7 @@ const MyProducts = () => {
       const response = await axios.get(`${url}/api/product/getSellerProduct`, { withCredentials: true });
       if (response.data.success) {
         setRows(response.data.products)
+        setLoading(false);
       }
     } catch (error) {
       console.log(error);
@@ -109,7 +110,7 @@ const MyProducts = () => {
   }
 
   useEffect(() => {
-    if(searchProduct) handleSearch();
+    if (searchProduct) handleSearch();
   }, [searchProduct])
 
 
@@ -138,7 +139,7 @@ const MyProducts = () => {
               if (user.isVerifiedSeller) {
                 navigate('/dashboard/addproduct');
               } else {
-                toast.warn( !user.storeDescription || !user.storeName || !user.gstNumber || user.phone === '' ? `Please complete your profile (GST Number, Description, Store Name, Phone No) before adding a product.` : 'Please wait for admin permission before adding a product.', {
+                toast.warn(!user.storeDescription || !user.storeName || !user.gstNumber || user.phone === '' ? `Please complete your profile (GST Number, Description, Store Name, Phone No) before adding a product.` : 'Please wait for admin permission before adding a product.', {
                   position: "top-right",
                   autoClose: 3000,
                 });
@@ -152,69 +153,81 @@ const MyProducts = () => {
       </Toolbar>
 
       {/* Table */}
-      <TableContainer sx={{ mt: '20px' }} >
-        <Table>
-          <TableHead>
-            <TableRow>
-              {headCells.map((headCell) => (
-                <TableCell
-                  align='center'
-                  key={headCell.id}
-                  sortDirection={orderBy === headCell.id ? order : false}
-                >
-                  <TableSortLabel
-                    active={orderBy === headCell.id}
-                    direction={orderBy === headCell.id ? order : 'asc'}
-                    onClick={(e) => handleRequestSort(e, headCell.id)}
+      {loading ?
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          height="70vh"
+          width="100%"
+        >
+          <CircularProgress size={60} />
+        </Box> :
+        <TableContainer sx={{ mt: '20px' }} >
+          <Table>
+            <TableHead>
+              <TableRow>
+                {headCells.map((headCell) => (
+                  <TableCell
+                    align='center'
+                    key={headCell.id}
+                    sortDirection={orderBy === headCell.id ? order : false}
                   >
-                    <strong>
-                      {headCell.label}
-                    </strong>
-                  </TableSortLabel>
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => {
-                return (
-                  <TableRow key={row._id} sx={{ '&:nth-of-type(odd)': { backgroundColor: 'grey.100' } }}>
-                    <TableCell align='center' >
-                      <img src={row.productimgs[0]} height="40px" />
-                    </TableCell>
-                    <TableCell align='center' >{row.name}</TableCell>
-                    <TableCell align='center' >{row.mainCategory}</TableCell>
-                    <TableCell align='center' >{row.subCategory}</TableCell>
-                    <TableCell align='center' >₹{row.price}</TableCell>
-                    <TableCell align='center' >{row.discount}%</TableCell>
-                    <TableCell align='center' >{row.stock}</TableCell>
-                    <TableCell align='center' >
-                      <IconButton onClick={() => { setEditDialog(true); setSelectProduct(row); }} color="primary">
-                        <EditIcon />
-                      </IconButton>
-                      <IconButton onClick={() => handleDelete(row._id)} color="error">
-                        <DeleteIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-          </TableBody>
-        </Table>
-      </TableContainer>
+                    <TableSortLabel
+                      active={orderBy === headCell.id}
+                      direction={orderBy === headCell.id ? order : 'asc'}
+                      onClick={(e) => handleRequestSort(e, headCell.id)}
+                    >
+                      <strong>
+                        {headCell.label}
+                      </strong>
+                    </TableSortLabel>
+                  </TableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((row) => {
+                  return (
+                    <TableRow key={row._id} sx={{ '&:nth-of-type(odd)': { backgroundColor: 'grey.100' } }}>
+                      <TableCell align='center' >
+                        <img src={row.productimgs[0]} height="40px" />
+                      </TableCell>
+                      <TableCell align='center' >{row.name}</TableCell>
+                      <TableCell align='center' >{row.mainCategory}</TableCell>
+                      <TableCell align='center' >{row.subCategory}</TableCell>
+                      <TableCell align='center' >₹{row.price}</TableCell>
+                      <TableCell align='center' >{row.discount}%</TableCell>
+                      <TableCell align='center' >{row.stock}</TableCell>
+                      <TableCell align='center' >
+                        <IconButton onClick={() => { setEditDialog(true); setSelectProduct(row); }} color="primary">
+                          <EditIcon />
+                        </IconButton>
+                        <IconButton onClick={() => handleDelete(row._id)} color="error">
+                          <DeleteIcon />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+            </TableBody>
+          </Table>
+<TablePagination
+  rowsPerPageOptions={[5, 10, 20]}
+  component="div"
+  count={rows.length}
+  rowsPerPage={rowsPerPage}
+  page={page}
+  onPageChange={handleChangePage}
+  onRowsPerPageChange={handleChangeRowsPerPage}
+/>
+        </TableContainer>
 
-      {/* Pagination */}
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 20]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
+
+      }
+
 
       {/* Edit Product Dialog  */}
 

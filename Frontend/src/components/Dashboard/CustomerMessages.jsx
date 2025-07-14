@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import {
   Box, Typography, Table, TableBody, TableCell,
   TableContainer, TableHead, TableRow, Paper, TablePagination,
-  InputBase, IconButton, Toolbar, Avatar, Button
+  InputBase, IconButton, Toolbar, Avatar, Button,
+  CircularProgress
 } from '@mui/material';
 import {
   Dialog, DialogTitle, DialogContent, DialogActions,
@@ -27,7 +28,7 @@ const CustomerMessages = () => {
   const { user } = useSelector(store => store.user);
   const dispatch = useDispatch();
   const { message } = useSelector(store => store.chat);
-
+  const [loading, setLoading] = useState(true);
   const scrollRef = useRef();
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -108,11 +109,10 @@ const CustomerMessages = () => {
   const getUserWhoSendMessage = async () => {
     try {
       const response = await axios.get(`${url}/api/message/users-who-sent-messages`, { withCredentials: true });
-
       if (response.data.success) {
         setCustomers(response.data.data)
+        setLoading(false);
       }
-
     } catch (error) {
       console.log(error);
     }
@@ -141,6 +141,16 @@ const CustomerMessages = () => {
       </Toolbar>
 
       {/* Table */}
+      {loading ?
+                          <Box
+                            display="flex"
+                            justifyContent="center"
+                            alignItems="center"
+                            height="70vh"
+                            width="100%"
+                          >
+                            <CircularProgress size={60} />
+                          </Box> :
       <TableContainer sx={{ mt: 2 }} component={Paper}>
         <Table>
           <TableHead>
@@ -188,6 +198,7 @@ const CustomerMessages = () => {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </TableContainer>
+}
 
       {/* Chat Dialog  */}
       <Dialog open={openChat} onClose={handleCloseChat} fullWidth>

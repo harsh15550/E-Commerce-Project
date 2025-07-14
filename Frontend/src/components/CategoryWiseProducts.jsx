@@ -1,12 +1,32 @@
-import { Box, Grid, Typography, IconButton } from '@mui/material';
+import { Box, Grid, Typography, IconButton, CircularProgress } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ProductCard from './ProductCard';
+import axios, { all } from 'axios';
+import { setAllProducts } from '../redux/productSlice';
 
 const CategoryWiseProducts = () => {
+    let url = "http://localhost:3000";
+    const dispatch = useDispatch();
+    const [loading, setLoading] = useState(true);
     const { allProduct } = useSelector(store => store.products);
+    const getAllProduct = async () => {
+        try {
+            const response = await axios.get(`${url}/api/product/getAllProduct`);
+            if (response.data.success) {
+                dispatch(setAllProducts(response.data.products));
+                setLoading(false);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        getAllProduct();
+    }, []);
     const [categories, setCategories] = useState({
         cloths: [],
         footwear: [],
@@ -55,7 +75,7 @@ const CategoryWiseProducts = () => {
 
         return (
             categories[category].length > 0 && (
-                <Box sx={{ mt: 4}} key={category}>
+                <Box sx={{ mt: 4 }} key={category}>
                     {/* Heading and Arrows */}
                     <Box
                         sx={{
@@ -105,6 +125,18 @@ const CategoryWiseProducts = () => {
             )
         );
     };
+
+    if (loading) {
+        return <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="70vh"
+            width="100%"
+        >
+            <CircularProgress size={60} />
+        </Box>;
+    }
 
     return (
         <Box>

@@ -50,8 +50,6 @@ export default function Navbar() {
   const { allProduct } = useSelector(store => store.products)
   const [searchProduct, setSearchProduct] = useState('');
   const [filteredProducts, setFilteredProducts] = useState(allProduct); // allProduct: from API
-  console.log(filteredProducts);
-  
 
   const toggleDrawer = (open) => () => {
     setDrawerOpen(open);

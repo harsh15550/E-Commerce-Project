@@ -4,7 +4,8 @@ import {
   TableHead, TableRow, Paper, TablePagination, Toolbar,
   Rating,
   Select,
-  MenuItem
+  MenuItem,
+  CircularProgress
 } from '@mui/material';
 import axios from 'axios';
 
@@ -12,6 +13,7 @@ const Reviews = () => {
   const [reviews, setReviews] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [loading, setLoading] = useState(true);
 
   const handleChangePage = (event, newPage) => setPage(newPage);
   const handleChangeRowsPerPage = (event) => {
@@ -24,6 +26,7 @@ const Reviews = () => {
       const response = await axios.get(`${url}/api/product/getReview`, { withCredentials: true });
       if (response.data.success) {
         setReviews(response.data.reviews);
+        setLoading(false);
       }
     } catch (error) {
       console.log(error);
@@ -58,6 +61,16 @@ const Reviews = () => {
       </Toolbar>
 
       {/* Table */}
+      {loading ?
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                      height="70vh"
+                      width="100%"
+                    >
+                      <CircularProgress size={60} />
+                    </Box> :
       <TableContainer sx={{ mt: 2 }} component={Paper}>
         <Table>
           <TableHead>
@@ -112,6 +125,7 @@ const Reviews = () => {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </TableContainer>
+}
     </Box>
   );
 };

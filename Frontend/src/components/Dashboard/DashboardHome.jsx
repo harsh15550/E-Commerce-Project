@@ -10,6 +10,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  CircularProgress,
 } from '@mui/material';
 import axios from 'axios';
 
@@ -20,12 +21,14 @@ const DashboardHome = () => {
   const [totalSale, setTotalSale] = useState();
   const [totalReviews, setTotalReviews] = useState();
   const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const getSellerOrder = async () => {
     try {
       const response = await axios.get(`${url}/api/order/sellerOrder`, { withCredentials: true });
       if (response.data.success) {
         setOrders(response.data.orders);
+        setLoading(false);
       }
     } catch (error) {
       console.log(error);
@@ -180,34 +183,46 @@ const DashboardHome = () => {
         <Typography variant="h5" fontWeight="bold" mb={2}>
           Pending Orders
         </Typography>
-        <TableContainer sx={{ maxHeight: '480px', overflowY: 'auto' }} component={Paper}>
-          <Table>
-            <TableHead sx={{ backgroundColor: '#f5f5f5' }}>
-              <TableRow>
-                <TableCell align='center'><strong>Image</strong></TableCell>
-                <TableCell align='center'><strong>Customer Name</strong></TableCell>
-                <TableCell align='center'><strong>Customer Number</strong></TableCell>
-                <TableCell align='center'><strong>Product Size</strong></TableCell>
-                <TableCell align='center'><strong>Original Price</strong></TableCell>
-                <TableCell align='center'><strong>Sub Category</strong></TableCell>
-                <TableCell align='center'><strong>Payment Ststus</strong></TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {orders.map((row) => row.orderStatus === 'pending' && (
-                <TableRow key={row._id} sx={{ '&:nth-of-type(even)': { backgroundColor: 'grey.100' } }}>
-                  <TableCell align='center'><img src={row.products[0].image} height="50px" /></TableCell>
-                  <TableCell align='center'>{row.firstName}</TableCell>
-                  <TableCell align='center'>{row.phone}</TableCell>
-                  <TableCell align='center'>{row.products[0].productSize}</TableCell>
-                  <TableCell align='center'>{row.products[0].price}</TableCell>
-                  <TableCell align='center'>{row.products[0].productId.subCategory}</TableCell>
-                  <TableCell align='center'>{row.paymentStatus}</TableCell>
+        {loading ?
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="70vh"
+            width="100%"
+          >
+            <CircularProgress size={60} />
+          </Box> :
+          <TableContainer sx={{ maxHeight: '480px', overflowY: 'auto' }} component={Paper}>
+            <Table>
+              <TableHead sx={{ backgroundColor: '#f5f5f5' }}>
+                <TableRow>
+                  <TableCell align='center'><strong>Image</strong></TableCell>
+                  <TableCell align='center'><strong>Customer Name</strong></TableCell>
+                  <TableCell align='center'><strong>Customer Number</strong></TableCell>
+                  <TableCell align='center'><strong>Product Size</strong></TableCell>
+                  <TableCell align='center'><strong>Original Price</strong></TableCell>
+                  <TableCell align='center'><strong>Sub Category</strong></TableCell>
+                  <TableCell align='center'><strong>Payment Ststus</strong></TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+              </TableHead>
+
+              <TableBody>
+                {orders.map((row) => row.orderStatus === 'pending' && (
+                  <TableRow key={row._id} sx={{ '&:nth-of-type(even)': { backgroundColor: 'grey.100' } }}>
+                    <TableCell align='center'><img src={row.products[0].image} height="50px" /></TableCell>
+                    <TableCell align='center'>{row.firstName}</TableCell>
+                    <TableCell align='center'>{row.phone}</TableCell>
+                    <TableCell align='center'>{row.products[0].productSize}</TableCell>
+                    <TableCell align='center'>{row.products[0].price}</TableCell>
+                    <TableCell align='center'>{row.products[0].productId.subCategory}</TableCell>
+                    <TableCell align='center'>{row.paymentStatus}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        }
       </Box>
     </Box>
   );

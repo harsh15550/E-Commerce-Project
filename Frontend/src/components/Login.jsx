@@ -6,7 +6,8 @@ import {
   Button,
   InputAdornment,
   IconButton,
-  Paper
+  Paper,
+  CircularProgress
 } from '@mui/material';
 import { Email, Lock, Visibility, VisibilityOff } from '@mui/icons-material';
 import { Link, useNavigate } from 'react-router-dom';
@@ -22,6 +23,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
   const url = 'http://localhost:3000';
 
   const handleTogglePassword = () => {
@@ -30,6 +32,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const response = await axios.post(`${url}/api/user/login`, {
         email,
@@ -43,6 +46,7 @@ const Login = () => {
 
       if (response.data.success) {
         toast.success(response.data.message);
+        setLoading(false);
         navigate('/');
         dispatch(setUser(response.data.user));
       } else {
@@ -66,7 +70,6 @@ const Login = () => {
         justifyContent: 'center',
       }}
     >
-      {/* Dark Blur Overlay */}
       <Box
         sx={{
           position: 'absolute',
@@ -168,7 +171,16 @@ const Login = () => {
               fontWeight: 'bold',
             }}
           >
-            Login
+            {loading ? (
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }} >
+                            Please Wait
+                            <CircularProgress size={20} sx={{ color: 'white' }} />
+                          </Box>
+                        ) : (
+                          <>
+                            Login
+                          </>
+                        )}
           </Button>
 
           {/* Forgot Password Button */}

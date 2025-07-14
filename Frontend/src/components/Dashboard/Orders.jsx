@@ -4,7 +4,8 @@ import {
   TableContainer, TableHead, TableRow, Paper, Select, MenuItem, TablePagination,
   InputBase,
   IconButton,
-  Toolbar
+  Toolbar,
+  CircularProgress
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import axios from 'axios'
@@ -23,6 +24,7 @@ const Orders = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [searchOrder, setSearchOrder] = useState([]);
 
   const url = 'http://localhost:3000'
@@ -54,6 +56,7 @@ const Orders = () => {
     try {
       const response = await axios.get(`${url}/api/order/sellerOrder`, { withCredentials: true });
       if (response.data.success) {
+        setLoading(false);
         setOrders(response.data.orders);
       }
     } catch (error) {
@@ -98,8 +101,16 @@ const Orders = () => {
 
         </Box>
       </Toolbar>
-
-      {/* Table */}
+      {loading ?
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                height="70vh"
+                width="100%"
+              >
+                <CircularProgress size={60} />
+              </Box> :
       <TableContainer sx={{ mt: 2 }} component={Paper}>
         <Table>
           <TableHead>
@@ -164,6 +175,7 @@ const Orders = () => {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </TableContainer>
+}
     </Box>
   );
 };
