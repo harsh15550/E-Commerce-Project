@@ -4,51 +4,75 @@ import productModel from "../models/product.js";
 import reviewModel from "../models/review.js";
 import userModel from "../models/user.js";
 import orderModel from "../models/Order.js";
+import streamifier from 'streamifier';
 
 export const addProduct = async (req, res) => {
-    const userId = req.user;
-    const { name, description, price, mainCategory, subCategory, stock, discount, sizes } = req.body;
+  try {
+    const {
+      name,
+      description,
+      price,
+      mainCategory,
+      subCategory,
+      stock,
+      discount,
+      sizes,
+    } = req.body;
 
-    const user = await userModel.findById(userId);
+    const userId = req.user; // assuming you attach user in authMiddleware
+    const files = req.files;
 
-    if (!user) return res.json({ success: false, message: 'User Not Authenticated' });
+    const productimgs = [];
 
-    try {
-        let productimgs = [];
+    for (let file of files) {
+      const imageUrl = await new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+          {
+            folder: 'ecommerce/products',
+            resource_type: 'image',
+          },
+          (error, result) => {
+            if (result) resolve(result.secure_url);
+            else reject(error);
+          }
+        );
 
-        // Loop through all files uploaded
-        for (let file of req.files) {
-            const result = await cloudinary.uploader.upload(file.path, {
-                folder: 'ecommerce/products',
-            });
-            productimgs.push(result.secure_url);
-        }
-        const newProduct = new productModel({
-            name,
-            description,
-            price,
-            mainCategory,
-            subCategory,
-            stock,
-            productimgs,
-            discount,
-            sizes,
-            sellerId: userId
-        })
+        streamifier.createReadStream(file.buffer).pipe(uploadStream);
+      });
 
-        await newProduct.save();
-
-        user.product.push(newProduct._id);
-        await user.save();
-
-        return res.json({ success: true, message: 'Product added successfully', product: newProduct });
-
-
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({ success: false, message: 'Server Error' });
+      productimgs.push(imageUrl);
     }
-}
+
+    const newProduct = new productModel({
+      name,
+      description,
+      price,
+      mainCategory,
+      subCategory,
+      stock,
+      productimgs,
+      discount,
+      sizes,
+      sellerId: userId,
+    });
+
+    await newProduct.save();
+
+    // Link product to user
+    const user = await userModel.findById(userId);
+    user.product.push(newProduct._id);
+    await user.save();
+
+    return res.json({
+      success: true,
+      message: 'Product added successfully',
+      product: newProduct,
+    });
+  } catch (error) {
+    console.error('Upload Error:', error);
+    return res.status(500).json({ success: false, message: 'Server Error' });
+  }
+};
 
 export const addReview = async (req, res) => {
     const userId = req.user;
@@ -145,7 +169,6 @@ export const getReviewsBySeller = async (req, res) => {
 
 export const getProductDetail = async (req, res) => {
     const userId = req.user;
-    console.log("detail page ",userId);
     
     const productId = req.params.id;
 

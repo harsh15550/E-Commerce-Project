@@ -8,7 +8,7 @@ import axios, { all } from 'axios';
 import { setAllProducts } from '../redux/productSlice';
 
 const CategoryWiseProducts = () => {
-    let url = "https://e-commerce-project-6wl4.onrender.com";
+    let url = "http://localhost:3000";
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(true);
     const { allProduct } = useSelector(store => store.products);

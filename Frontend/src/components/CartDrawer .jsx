@@ -24,7 +24,7 @@ import axios from 'axios';
 export default function CartDrawer({ drawerOpen, toggleDrawer }) {
   const { cartItems } = useSelector((state) => state.cartItems);
   const dispatch = useDispatch();
-  const url = 'https://e-commerce-project-6wl4.onrender.com'
+  const url = 'http://localhost:3000'
   const [loading, setLoading] = useState(false);
   const { user } = useSelector(store => store.user)
 

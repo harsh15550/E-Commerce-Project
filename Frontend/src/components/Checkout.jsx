@@ -13,7 +13,7 @@ export default function CheckoutPage() {
   console.log(user);
   
   const dispatch = useDispatch();
-  const url = 'https://e-commerce-project-6wl4.onrender.com'
+  const url = 'http://localhost:3000'
   const [loading, setLoading] = useState(false);
   const handleAddToCart = (product) => {
     const existingItem = cartItems?.find(item => item._id === product._id);

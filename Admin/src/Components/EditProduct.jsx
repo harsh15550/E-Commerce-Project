@@ -35,7 +35,7 @@ const categories = {
 const sizes = ['S', 'M', 'L', 'XS', 'XL', 'XXL'];
 
 const EditProductPage = ({ setEditDialog, editDialog, selectProduct, setSelectProduct, setRows, rows }) => {
-  const url = 'https://e-commerce-project-6wl4.onrender.com';
+  const url = 'http://localhost:3000';
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [mainCategory, setMainCategory] = useState('');

@@ -47,7 +47,7 @@ function App() {
   useEffect(() => {
     if (!userId) return; // Wait until userId is available
 
-    const newSocket = io("https://e-commerce-project-6wl4.onrender.com", {
+    const newSocket = io("http://localhost:3000", {
       query: { userId },
     });
 
@@ -60,7 +60,7 @@ function App() {
 
   const getAllProduct = async () => {
     try {
-      const response = await axios.get(`https://e-commerce-project-6wl4.onrender.com/api/product/getAllProduct`);
+      const response = await axios.get(`http://localhost:3000/api/product/getAllProduct`);
       if (response.data.success) {
         dispatch(setAllProducts(response.data.products));
         setAllProduct(response.data.products);
@@ -75,14 +75,11 @@ function App() {
   }, [])
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (Array.isArray(allProduct) && allProduct.length > 0) {
-        setShowLoader(false);
-      }
-    }, 100);
+  if (Array.isArray(allProduct)) {
+    setShowLoader(false); // Even if product is empty, we stop loader
+  }
+}, [allProduct]);
 
-    return () => clearTimeout(timer);
-  }, [allProduct]);
 
   if (!user && (allProduct.length === 0)) {
     return (
