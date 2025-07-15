@@ -28,7 +28,7 @@ const ProductsPage = () => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const { allProduct } = useSelector(store => store.products);
-  const url = 'http://localhost:3000';
+  const url = 'https://e-commerce-project-6wl4.onrender.com';
 
   const toggleDrawer = (open) => () => {
     setOpen(open);

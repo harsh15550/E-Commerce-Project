@@ -18,7 +18,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
 const AddProduct = () => {
-    const url = 'http://localhost:3000';
+    const url = 'https://e-commerce-project-6wl4.onrender.com';
 
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');

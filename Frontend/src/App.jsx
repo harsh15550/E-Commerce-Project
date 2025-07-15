@@ -47,7 +47,7 @@ function App() {
   useEffect(() => {
     if (!userId) return; // Wait until userId is available
 
-    const newSocket = io("http://localhost:3000", {
+    const newSocket = io("https://e-commerce-project-6wl4.onrender.com", {
       query: { userId },
     });
 
@@ -60,7 +60,7 @@ function App() {
 
   const getAllProduct = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/api/product/getAllProduct`);
+      const response = await axios.get(`https://e-commerce-project-6wl4.onrender.com/api/product/getAllProduct`);
       if (response.data.success) {
         dispatch(setAllProducts(response.data.products));
         setAllProduct(response.data.products);

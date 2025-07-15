@@ -13,7 +13,7 @@ import { useDispatch } from 'react-redux';
 import { setCartItems } from '../redux/cartSlice';
 
 const MyOrders = () => {
-    const url = 'http://localhost:3000';
+    const url = 'https://e-commerce-project-6wl4.onrender.com';
     const [orders, setOrders] = useState([]);
     const [selectedOrder, setSelectedOrder] = useState({});
     const [review, setReview] = useState({});

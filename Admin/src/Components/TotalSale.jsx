@@ -16,7 +16,7 @@ const TotalSale = () => {
   const [shippedOrder, setShippedOrder] = useState([]);
   const [searchOrder, setSearchOrder] = useState([]);
 
-  const url = 'http://localhost:3000'
+  const url = 'https://e-commerce-project-6wl4.onrender.com'
 
   const handleChangePage = (event, newPage) => setPage(newPage);
   const handleChangeRowsPerPage = (event) => {
